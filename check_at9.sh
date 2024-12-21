@@ -25,21 +25,29 @@ for file in "${files[@]}"; do
 	iconv -f UTF-16LE -t UTF-8 "$csvp_jp" -o jp_"$file".csv
 	iconv -f UTF-16LE -t UTF-8 "$csvp_de" -o de_"$file".csv
 
-	cat jp_"$file".csv | grep -o 'MSG_[A-Za-z0-9_]*' > "$file"
-	cat jp_"$file".csv | grep -o 'COMMENT_[A-Za-z0-9_]*' >> "$file"
-	cat jp_"$file".csv | grep -o 'GUIDANCE_[A-Za-z0-9_]*' >> "$file"
-	cat jp_"$file".csv | grep -o 'TEXT_[A-Za-z0-9_]*' >> "$file"
-	cat jp_"$file".csv | grep -o 'BALLOON_[A-Za-z0-9_]*' >> "$file"
-	cat jp_"$file".csv | grep -o 'FORM_[A-Za-z0-9_]*' >> "$file"
-	cat jp_"$file".csv | grep -o 'STC_[A-Za-z0-9_]*' >> "$file"
-	cat jp_"$file".csv | grep -o 'AUTOMOBILE_[A-Za-z0-9_]*' >> "$file"
+	patterns='(MSG|COMMENT|GUIDANCE|STOCKTEXT|BALLOON|FORM|STC|AUTOMOBILE|TEXT)_[A-Za-z0-9_]*'
+
+	grep -oE "$patterns" "jp_${file}.csv" > "$file"
 
 	while read -r begriff; do
     	if ! grep -q "$begriff" de_"$file".csv; then
         	echo "'$begriff'" >> "$file"_fehlt
-    	fi
+        	changes="1"
+		fi
 	done < <( cat "$file" )
 
 	rm jp_"$file".csv de_"$file".csv "$file"
-
+	
+	if [[ "$changes" = "1" ]]; then
+		echo "$file"".csv muss angepasst werden"
+		altering="1"
+	fi
+	
+	changes="0"
+	
 done
+
+if [[ "$altering" != "1" ]]; then
+	echo "Glückwunsch, es muss nichts hinzugefügt werden."
+fi
+
