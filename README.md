@@ -2,7 +2,7 @@
 
 Deutsche Sprachdatei für A-Train 9v5.
 
-Erstellung einer neuern csvp.bin nach einem Update:
+Erstellung einer neuern csvp.bin nach einem Update unter einem Linux-Derivat:
  
 Es muss zuvor csvp.bin der deutschen Vorversion extrahiert werden:
 ```
