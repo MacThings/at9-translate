@@ -29,3 +29,6 @@ wine a9codec.exe -c csvp
 Dies wird eine Datei mit dem Namen csvp.bin_new anlegen. Diese zu csvp.bin umbenennen.
 
 Fertig.
+
+Updates für A-Train 9 gibt es hier:
+https://www.a-train9.jp/patch.html
